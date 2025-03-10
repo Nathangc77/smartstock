@@ -18,7 +18,7 @@ public class Product {
     private Integer quantity;
     private UnitMeasure unitMeasure;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
