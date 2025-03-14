@@ -1,6 +1,6 @@
 package com.moreira.smartstock.services;
 
-import com.moreira.smartstock.dtos.InsertProductDTO;
+import com.moreira.smartstock.dtos.ProductSaveDTO;
 import com.moreira.smartstock.dtos.ProductDTO;
 import com.moreira.smartstock.entities.Category;
 import com.moreira.smartstock.entities.Product;
@@ -9,13 +9,10 @@ import com.moreira.smartstock.repositories.CategoryRepository;
 import com.moreira.smartstock.repositories.ProductRepository;
 import com.moreira.smartstock.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @Service
 public class ProductService {
@@ -40,20 +37,32 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO insert(InsertProductDTO dto) {
+    public ProductDTO insert(ProductSaveDTO dto) {
         try {
             Product entity = new Product();
-            entity.setName(dto.getName());
-            entity.setPrice(dto.getPrice());
+            copyDtoForEntity(dto, entity);
             entity.setQuantity(0);
-            Category cat = categoryRepository.getReferenceById(dto.getCategoryId());
-            entity.setCategory(cat);
-            entity.setUnitMeasure(UnitMeasure.valueOf(dto.getUnitMeasure()));
 
             entity = repository.save(entity);
             return new ProductDTO(entity);
         } catch (Exception e) {
             throw new ResourceNotFoundException("Recurso não encontrado");
         }
+    }
+
+    @Transactional
+    public ProductDTO update(Long id, ProductSaveDTO dto) {
+        Product entity = repository.getReferenceById(id);
+        copyDtoForEntity(dto, entity);
+        entity = repository.save(entity);
+        return new ProductDTO(entity);
+    }
+
+    private void copyDtoForEntity(ProductSaveDTO dto, Product entity) {
+        entity.setName(dto.getName());
+        entity.setPrice(dto.getPrice());
+        Category cat = categoryRepository.getReferenceById(dto.getCategoryId());
+        entity.setCategory(cat);
+        entity.setUnitMeasure(UnitMeasure.valueOf(dto.getUnitMeasure()));
     }
 }

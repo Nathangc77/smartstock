@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
-public class InsertProductDTO {
+public class ProductSaveDTO {
 
     @Size(min = 3, max = 80, message = "Nome deve ter de 3 a 80 caracteres")
     @NotBlank(message = "Campo requerido")
@@ -19,7 +19,7 @@ public class InsertProductDTO {
     @NotNull(message = "Campo requerido")
     private Long categoryId;
 
-    public InsertProductDTO() {
+    public ProductSaveDTO() {
     }
 
     public String getName() {

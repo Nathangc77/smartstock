@@ -1,6 +1,6 @@
 package com.moreira.smartstock.controllers;
 
-import com.moreira.smartstock.dtos.InsertProductDTO;
+import com.moreira.smartstock.dtos.ProductSaveDTO;
 import com.moreira.smartstock.dtos.ProductDTO;
 import com.moreira.smartstock.services.ProductService;
 import jakarta.validation.Valid;
@@ -33,12 +33,18 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody InsertProductDTO dto) {
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductSaveDTO dto) {
         ProductDTO inserted = service.insert(dto);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(inserted.getId()).toUri();
 
         return ResponseEntity.created(uri).body(inserted);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductSaveDTO dto) {
+        ProductDTO updated = service.update(id, dto);
+        return ResponseEntity.ok().body(updated);
     }
 }
