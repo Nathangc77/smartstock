@@ -7,11 +7,14 @@ import com.moreira.smartstock.entities.Product;
 import com.moreira.smartstock.entities.UnitMeasure;
 import com.moreira.smartstock.repositories.CategoryRepository;
 import com.moreira.smartstock.repositories.ProductRepository;
+import com.moreira.smartstock.services.exceptions.IntegrityViolationDatabaseException;
 import com.moreira.smartstock.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -56,6 +59,16 @@ public class ProductService {
         copyDtoForEntity(dto, entity);
         entity = repository.save(entity);
         return new ProductDTO(entity);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        if (!repository.existsById(id)) throw new ResourceNotFoundException("Produto não encontrado");
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new IntegrityViolationDatabaseException("Falha na integridade referencial");
+        }
     }
 
     private void copyDtoForEntity(ProductSaveDTO dto, Product entity) {
