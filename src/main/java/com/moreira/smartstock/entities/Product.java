@@ -2,9 +2,7 @@ package com.moreira.smartstock.entities;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_product")
@@ -21,6 +19,9 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "product")
+    private List<StockMovement> movements = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "tb_product_provider", joinColumns = @JoinColumn(name = "product_id"),
@@ -88,6 +89,10 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<StockMovement> getMovements() {
+        return movements;
     }
 
     @Override

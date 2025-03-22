@@ -2,9 +2,7 @@ package com.moreira.smartstock.entities;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_user")
@@ -17,6 +15,9 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<StockMovement> movements = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "tb_user_role",
@@ -68,6 +69,10 @@ public class User {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public List<StockMovement> getMovements() {
+        return movements;
     }
 
     public void addRole(Role role) {
