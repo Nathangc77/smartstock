@@ -7,12 +7,15 @@ import com.moreira.smartstock.entities.Product;
 import com.moreira.smartstock.entities.UnitMeasure;
 import com.moreira.smartstock.repositories.CategoryRepository;
 import com.moreira.smartstock.repositories.ProductRepository;
-import com.moreira.smartstock.services.exceptions.IntegrityViolationDatabaseException;
+import com.moreira.smartstock.services.exceptions.DatabaseException;
 import com.moreira.smartstock.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,17 +51,21 @@ public class ProductService {
 
             entity = repository.save(entity);
             return new ProductDTO(entity);
-        } catch (Exception e) {
+        } catch (DataIntegrityViolationException e) {
             throw new ResourceNotFoundException("Recurso não encontrado");
         }
     }
 
-    @Transactional
     public ProductDTO update(Long id, ProductSaveDTO dto) {
-        Product entity = repository.getReferenceById(id);
-        copyDtoForEntity(dto, entity);
-        entity = repository.save(entity);
-        return new ProductDTO(entity);
+        Product entity = repository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Produto não encontrado"));
+        try {
+            copyDtoForEntity(dto, entity);
+            entity = repository.save(entity);
+            return new ProductDTO(entity);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha na integridade referencial");
+        }
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -67,7 +74,7 @@ public class ProductService {
         try {
             repository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new IntegrityViolationDatabaseException("Falha na integridade referencial");
+            throw new DatabaseException("Falha na integridade referencial");
         }
     }
 
