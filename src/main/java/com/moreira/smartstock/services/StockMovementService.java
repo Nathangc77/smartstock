@@ -24,7 +24,7 @@ public class StockMovementService {
     private ProductRepository productRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Transactional
     public StockMovementDTO movement(StockMovementDTO dto) {
@@ -49,7 +49,7 @@ public class StockMovementService {
         entity.setType(TypeMovement.valueOf(dto.getType()));
         entity.setReason(dto.getReason());
         entity.setProduct(product);
-        entity.setUser(userRepository.getReferenceById(dto.getUserId()));
+        entity.setUser(userService.getUserLogged());
         entity = repository.save(entity);
         return new StockMovementDTO(entity);
     }

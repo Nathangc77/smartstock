@@ -5,10 +5,14 @@ import com.moreira.smartstock.entities.User;
 import com.moreira.smartstock.projections.UserDetailsProjection;
 import com.moreira.smartstock.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,6 +36,16 @@ public class UserService implements UserDetailsService {
             user.addRole(new Role(projection.getRoleId(), projection.getAuthority()));
         }
 
+        return user;
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserLogged() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
+        String username = jwtPrincipal.getClaim("username");
+        System.out.println(username);
+        User user = repository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Usuário não logado"));
         return user;
     }
 }
