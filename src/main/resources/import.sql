@@ -37,8 +37,8 @@ INSERT INTO tb_product_provider (product_id, provider_id) VALUES (11, 1);
 INSERT INTO tb_product_provider (product_id, provider_id) VALUES (12, 4);
 INSERT INTO tb_product_provider (product_id, provider_id) VALUES (13, 4);
 
-INSERT INTO tb_user (name, email, password) VALUES ('Maria Brown', 'maria@gmail.com', '123456');
-INSERT INTO tb_user (name, email, password) VALUES ('Alex Green', 'alex@gmail.com', '123456');
+INSERT INTO tb_user (name, email, password) VALUES ('Maria Brown', 'maria@gmail.com', '$2a$10$K6U.VlbYY6vWizonW6GFB.9G3QSJ9JzfQudivOwJzPHqZcac.FM8G');
+INSERT INTO tb_user (name, email, password) VALUES ('Alex Green', 'alex@gmail.com', '$2a$10$K6U.VlbYY6vWizonW6GFB.9G3QSJ9JzfQudivOwJzPHqZcac.FM8G');
 
 INSERT INTO tb_role (authority) VALUES ('ROLE_OPERATOR');
 INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');
