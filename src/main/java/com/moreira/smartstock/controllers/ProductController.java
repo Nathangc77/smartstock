@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,18 +22,21 @@ public class ProductController {
     private ProductService service;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ADMIN')")
     public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) {
         Page<ProductDTO> results = service.findAll(pageable);
         return ResponseEntity.ok(results);
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ADMIN')")
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
         ProductDTO dto = service.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductSaveDTO dto) {
         ProductDTO inserted = service.insert(dto);
 
@@ -43,12 +47,14 @@ public class ProductController {
     }
 
     @PutMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductSaveDTO dto) {
         ProductDTO updated = service.update(id, dto);
         return ResponseEntity.ok().body(updated);
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
