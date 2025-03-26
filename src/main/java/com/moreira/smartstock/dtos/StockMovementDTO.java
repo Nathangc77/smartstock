@@ -1,6 +1,10 @@
 package com.moreira.smartstock.dtos;
 
 import com.moreira.smartstock.entities.StockMovement;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
 
@@ -8,9 +12,15 @@ public class StockMovementDTO {
 
     private Long id;
     private Instant moment;
+    @NotNull(message = "Campo requerido")
+    @Positive(message = "Quantidade deve ser maior que 0")
     private Integer quantity;
+    @NotBlank(message = "Campo requerido")
     private String type;
+    @NotBlank(message = "Campo requerido")
+    @Size(min = 5, max = 100, message = "mensagem deve conter entre 5 e 100 caracteres")
     private String reason;
+    @NotNull(message = "Campo requerido")
     private Long productId;
     private Long userId;
 

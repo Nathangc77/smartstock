@@ -2,6 +2,7 @@ package com.moreira.smartstock.controllers;
 
 import com.moreira.smartstock.dtos.StockMovementDTO;
 import com.moreira.smartstock.services.StockMovementService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +20,7 @@ public class StockMovementController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ADMIN')")
-    public ResponseEntity<StockMovementDTO> movement(@RequestBody StockMovementDTO dto) {
+    public ResponseEntity<StockMovementDTO> movement(@RequestBody @Valid StockMovementDTO dto) {
         dto = service.movement(dto);
         return ResponseEntity.ok(dto);
     }
