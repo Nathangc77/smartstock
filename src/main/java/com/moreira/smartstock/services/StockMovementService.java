@@ -9,6 +9,8 @@ import com.moreira.smartstock.repositories.StockMovementRepository;
 import com.moreira.smartstock.repositories.UserRepository;
 import com.moreira.smartstock.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,12 @@ public class StockMovementService {
 
     @Autowired
     private UserService userService;
+
+    @Transactional(readOnly = true)
+    public Page<StockMovementDTO> findAll(Pageable pageable) {
+        Page<StockMovement> result = repository.findAll(pageable);
+        return result.map(StockMovementDTO::new);
+    }
 
     @Transactional
     public StockMovementDTO movement(StockMovementDTO dto) {
