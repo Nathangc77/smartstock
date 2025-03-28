@@ -22,12 +22,20 @@ public class StockMovement {
     private String reason;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "provider_id", nullable = true)
+    private Provider provider;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = true)
+    private Client client;
 
     public StockMovement() {
     }
@@ -94,6 +102,22 @@ public class StockMovement {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     @Override
