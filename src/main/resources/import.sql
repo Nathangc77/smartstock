@@ -47,8 +47,14 @@ INSERT INTO tb_user_role (user_id, role_id) VALUES (1, 1);
 INSERT INTO tb_user_role (user_id, role_id) VALUES (1, 2);
 INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 1);
 
-INSERT INTO tb_stock_movement (moment, quantity, type, reason, product_id, user_id) VALUES ('2024-03-01T10:15:00Z', 50, 0, 'Reposição de estoque', 1, 1);
-INSERT INTO tb_stock_movement (moment, quantity, type, reason, product_id, user_id) VALUES ('2024-03-02T14:30:00Z', 20, 1, 'Venda realizada', 2, 2);
-INSERT INTO tb_stock_movement (moment, quantity, type, reason, product_id, user_id) VALUES ('2024-03-03T09:00:00Z', 10, 1, 'Produto usado para manutenção interna', 3, 1);
-INSERT INTO tb_stock_movement (moment, quantity, type, reason, product_id, user_id) VALUES ('2024-03-04T16:45:00Z', 100, 0, 'Novo lote recebido do fornecedor', 4, 2);
-INSERT INTO tb_stock_movement (moment, quantity, type, reason, product_id, user_id) VALUES ('2024-03-05T11:20:00Z', 5, 1, 'Amostra para cliente', 5, 2);
+INSERT INTO tb_client (name, cpf_cnpj, address, phone, register_date) VALUES ('João Silva', '123.456.789-00', 'Rua das Flores, 123', '(11) 98765-4321', '2024-03-15');
+INSERT INTO tb_client (name, cpf_cnpj, address, phone, register_date) VALUES ('Maria Oliveira', '987.654.321-00', 'Av. Brasil, 456', '(21) 99876-5432', '2024-02-10');
+INSERT INTO tb_client (name, cpf_cnpj, address, phone, register_date) VALUES ('Carlos Souza', '456.123.789-99', 'Rua Azul, 789', '(31) 91234-5678', '2024-01-20');
+INSERT INTO tb_client (name, cpf_cnpj, address, phone, register_date) VALUES ('Fernanda Lima', '789.321.654-88', 'Praça Central, 101', '(41) 92345-6789', '2024-04-01');
+INSERT INTO tb_client (name, cpf_cnpj, address, phone, register_date) VALUES ('Roberto Nunes', '321.987.654-77', 'Travessa das Árvores, 202', '(51) 93456-7890', '2024-03-05');
+
+INSERT INTO tb_stock_movement (moment, quantity, type, reason, product_id, user_id, provider_id) VALUES ('2024-03-01T10:15:00Z', 50, 0, 'Reposição de estoque', 1, 1, 1);
+INSERT INTO tb_stock_movement (moment, quantity, type, reason, product_id, user_id, client_id) VALUES ('2024-03-02T14:30:00Z', 20, 1, 'Venda realizada', 2, 2, 1);
+INSERT INTO tb_stock_movement (moment, quantity, type, reason, product_id, user_id, client_id) VALUES ('2024-03-03T09:00:00Z', 10, 1, 'Produto usado para manutenção interna', 3, 1, 2);
+INSERT INTO tb_stock_movement (moment, quantity, type, reason, product_id, user_id, provider_id) VALUES ('2024-03-04T16:45:00Z', 100, 0, 'Novo lote recebido do fornecedor', 4, 2, 4);
+INSERT INTO tb_stock_movement (moment, quantity, type, reason, product_id, user_id, client_id) VALUES ('2024-03-05T11:20:00Z', 5, 1, 'Amostra para cliente', 5, 2, 1);
