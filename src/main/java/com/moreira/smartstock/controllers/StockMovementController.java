@@ -1,6 +1,7 @@
 package com.moreira.smartstock.controllers;
 
 import com.moreira.smartstock.dtos.EntryMovementDTO;
+import com.moreira.smartstock.dtos.ExitMovementDTO;
 import com.moreira.smartstock.dtos.StockMovementDTO;
 import com.moreira.smartstock.services.StockMovementService;
 import jakarta.validation.Valid;
@@ -32,6 +33,17 @@ public class StockMovementController {
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ADMIN')")
     public ResponseEntity<StockMovementDTO> registerStockEntry(@Valid @RequestBody EntryMovementDTO dto) {
         StockMovementDTO result = service.registerStockEntry(dto);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/movements").buildAndExpand().toUri();
+
+        return ResponseEntity.created(uri).body(result);
+    }
+
+    @PostMapping(value = "/exit")
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ADMIN')")
+    public ResponseEntity<StockMovementDTO> registerStockExit(@Valid @RequestBody ExitMovementDTO dto) {
+        StockMovementDTO result = service.registerStockExit(dto);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/movements").buildAndExpand().toUri();

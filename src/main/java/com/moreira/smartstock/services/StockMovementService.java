@@ -1,11 +1,10 @@
 package com.moreira.smartstock.services;
 
 import com.moreira.smartstock.dtos.EntryMovementDTO;
+import com.moreira.smartstock.dtos.ExitMovementDTO;
 import com.moreira.smartstock.dtos.StockMovementDTO;
-import com.moreira.smartstock.entities.Product;
-import com.moreira.smartstock.entities.Provider;
-import com.moreira.smartstock.entities.StockMovement;
-import com.moreira.smartstock.entities.TypeMovement;
+import com.moreira.smartstock.entities.*;
+import com.moreira.smartstock.repositories.ClientRepository;
 import com.moreira.smartstock.repositories.ProductRepository;
 import com.moreira.smartstock.repositories.ProviderRepository;
 import com.moreira.smartstock.repositories.StockMovementRepository;
@@ -29,6 +28,9 @@ public class StockMovementService {
 
     @Autowired
     private ProviderRepository providerRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Autowired
     private UserService userService;
@@ -58,6 +60,35 @@ public class StockMovementService {
 
         entity = repository.save(entity);
         product.setQuantity(product.getQuantity() + dto.getQuantity());
+        productRepository.save(product);
+
+        return new StockMovementDTO(entity);
+    }
+
+    @Transactional
+    public StockMovementDTO registerStockExit(ExitMovementDTO dto) {
+        Product product = productRepository.findById(dto.getProductId())
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
+
+        if (product.getQuantity() < dto.getQuantity()) {
+            throw new RuntimeException("Estoque insuficiente");
+        }
+
+        Client client = clientRepository.findById(dto.getClientId())
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
+
+        StockMovement entity = new StockMovement();
+        entity.setMoment(Instant.now());
+        entity.setQuantity(dto.getQuantity());
+        entity.setReason(dto.getReason());
+        entity.setType(TypeMovement.SAIDA);
+        entity.setProduct(product);
+        entity.setClient(client);
+        entity.setUser(userService.getUserLogged());
+
+        entity = repository.save(entity);
+
+        product.setQuantity(product.getQuantity() - dto.getQuantity());
         productRepository.save(product);
 
         return new StockMovementDTO(entity);
