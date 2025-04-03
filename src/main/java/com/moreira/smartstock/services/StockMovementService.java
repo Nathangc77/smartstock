@@ -37,7 +37,7 @@ public class StockMovementService {
 
     @Transactional(readOnly = true)
     public Page<StockMovementDTO> findAll(Pageable pageable) {
-        Page<StockMovement> result = repository.findAll(pageable);
+        Page<StockMovement> result = repository.searchStockMovement(pageable);
         return result.map(StockMovementDTO::new);
     }
 
