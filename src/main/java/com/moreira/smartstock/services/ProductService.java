@@ -1,7 +1,7 @@
 package com.moreira.smartstock.services;
 
-import com.moreira.smartstock.dtos.ProductSaveDTO;
 import com.moreira.smartstock.dtos.ProductDTO;
+import com.moreira.smartstock.dtos.ProductSaveDTO;
 import com.moreira.smartstock.entities.Category;
 import com.moreira.smartstock.entities.Product;
 import com.moreira.smartstock.entities.UnitMeasure;
@@ -9,13 +9,10 @@ import com.moreira.smartstock.repositories.CategoryRepository;
 import com.moreira.smartstock.repositories.ProductRepository;
 import com.moreira.smartstock.services.exceptions.DatabaseException;
 import com.moreira.smartstock.services.exceptions.ResourceNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,7 +78,8 @@ public class ProductService {
     private void copyDtoForEntity(ProductSaveDTO dto, Product entity) {
         entity.setName(dto.getName());
         entity.setPrice(dto.getPrice());
-        Category cat = categoryRepository.getReferenceById(dto.getCategoryId());
+        Category cat = new Category();
+        cat.setId(dto.getCategoryId());
         entity.setCategory(cat);
         entity.setUnitMeasure(UnitMeasure.valueOf(dto.getUnitMeasure()));
     }
