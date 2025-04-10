@@ -22,6 +22,13 @@ public class ProductSaveDTO {
     public ProductSaveDTO() {
     }
 
+    public ProductSaveDTO(String name, Double price, String unitMeasure, Long categoryId) {
+        this.name = name;
+        this.price = price;
+        this.unitMeasure = unitMeasure;
+        this.categoryId = categoryId;
+    }
+
     public String getName() {
         return name;
     }
