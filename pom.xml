@@ -84,6 +84,39 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.10</version>
+				<configuration>
+					<excludes>
+						<exclude>com/moreira/smartstock/SmartstockApplication.class</exclude>
+						<exclude>com/moreira/smartstock/config/**</exclude>
+						<exclude>com/moreira/smartstock/entities/**</exclude>
+						<exclude>com/moreira/smartstock/dto/**</exclude>
+						<exclude>com/moreira/smartstock/controllers/**</exclude>
+						<exclude>com/moreira/smartstock/services/exceptions/**</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/jacoco-report</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
