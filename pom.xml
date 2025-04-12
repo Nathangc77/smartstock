@@ -94,9 +94,10 @@
 						<exclude>com/moreira/smartstock/SmartstockApplication.class</exclude>
 						<exclude>com/moreira/smartstock/config/**</exclude>
 						<exclude>com/moreira/smartstock/entities/**</exclude>
-						<exclude>com/moreira/smartstock/dto/**</exclude>
+						<exclude>com/moreira/smartstock/dtos/**</exclude>
 						<exclude>com/moreira/smartstock/controllers/**</exclude>
 						<exclude>com/moreira/smartstock/services/exceptions/**</exclude>
+						<exclude>com/moreira/smartstock/utils/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>
