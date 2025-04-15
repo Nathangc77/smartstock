@@ -43,4 +43,20 @@ public class ExitMovementDTO {
     public Long getClientId() {
         return clientId;
     }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
 }

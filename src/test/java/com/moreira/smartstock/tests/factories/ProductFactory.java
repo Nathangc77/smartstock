@@ -13,6 +13,12 @@ public class ProductFactory {
         return product;
     }
 
+    public static Product createProduct(Long productId) {
+        Product product = new Product(productId, "Martelo de Borracha 500g", 25.00, 100, UnitMeasure.UN);
+        product.setCategory(new Category(1L, "Ferramentas"));
+        return product;
+    }
+
     public static ProductSaveDTO createProductSaveDTO() {
         Product product = createProduct();
         return new ProductSaveDTO(product.getName(), product.getPrice(), product.getUnitMeasure().name(), product.getCategory().getId());

@@ -43,4 +43,20 @@ public class EntryMovementDTO {
     public Long getProviderId() {
         return providerId;
     }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public void setProviderId(Long providerId) {
+        this.providerId = providerId;
+    }
 }

@@ -22,6 +22,15 @@ public class Provider {
     public Provider() {
     }
 
+    public Provider(Long id, String name, String cnpj, String email, String phone, Boolean active) {
+        this.id = id;
+        this.name = name;
+        this.cnpj = cnpj;
+        this.email = email;
+        this.phone = phone;
+        this.active = active;
+    }
+
     public Long getId() {
         return id;
     }
