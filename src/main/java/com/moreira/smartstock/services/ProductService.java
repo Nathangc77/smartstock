@@ -41,16 +41,12 @@ public class ProductService {
 
     @Transactional
     public ProductDTO insert(ProductSaveDTO dto) {
-        try {
             Product entity = new Product();
             copyDtoForEntity(dto, entity);
             entity.setQuantity(0);
 
             entity = repository.save(entity);
             return new ProductDTO(entity);
-        } catch (DataIntegrityViolationException e) {
-            throw new ResourceNotFoundException("Recurso não encontrado");
-        }
     }
 
     public ProductDTO update(Long id, ProductSaveDTO dto) {
@@ -76,9 +72,11 @@ public class ProductService {
     }
 
     private void copyDtoForEntity(ProductSaveDTO dto, Product entity) {
+        Category cat = categoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada"));
+
         entity.setName(dto.getName());
         entity.setPrice(dto.getPrice());
-        Category cat = new Category();
         cat.setId(dto.getCategoryId());
         entity.setCategory(cat);
         entity.setUnitMeasure(UnitMeasure.valueOf(dto.getUnitMeasure()));
