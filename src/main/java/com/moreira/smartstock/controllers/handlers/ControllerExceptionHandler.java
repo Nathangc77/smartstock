@@ -3,6 +3,7 @@ package com.moreira.smartstock.controllers.handlers;
 import com.moreira.smartstock.dtos.exceptions.CustomError;
 import com.moreira.smartstock.dtos.exceptions.ValidationError;
 import com.moreira.smartstock.services.exceptions.DatabaseException;
+import com.moreira.smartstock.services.exceptions.InsufficientStockException;
 import com.moreira.smartstock.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -31,9 +32,9 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<CustomError> runTime(RuntimeException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+    @ExceptionHandler(InsufficientStockException.class)
+    public ResponseEntity<CustomError> insufficientStock(InsufficientStockException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
         CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }

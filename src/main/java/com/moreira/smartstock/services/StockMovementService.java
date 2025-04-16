@@ -8,6 +8,7 @@ import com.moreira.smartstock.repositories.ClientRepository;
 import com.moreira.smartstock.repositories.ProductRepository;
 import com.moreira.smartstock.repositories.ProviderRepository;
 import com.moreira.smartstock.repositories.StockMovementRepository;
+import com.moreira.smartstock.services.exceptions.InsufficientStockException;
 import com.moreira.smartstock.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -71,7 +72,7 @@ public class StockMovementService {
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
 
         if (product.getQuantity() < dto.getQuantity()) {
-            throw new RuntimeException("Estoque insuficiente");
+            throw new InsufficientStockException("Estoque insuficiente");
         }
 
         Client client = clientRepository.findById(dto.getClientId())
