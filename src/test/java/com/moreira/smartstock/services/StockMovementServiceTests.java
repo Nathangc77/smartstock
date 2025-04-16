@@ -8,6 +8,7 @@ import com.moreira.smartstock.repositories.ClientRepository;
 import com.moreira.smartstock.repositories.ProductRepository;
 import com.moreira.smartstock.repositories.ProviderRepository;
 import com.moreira.smartstock.repositories.StockMovementRepository;
+import com.moreira.smartstock.services.exceptions.InsufficientStockException;
 import com.moreira.smartstock.services.exceptions.ResourceNotFoundException;
 import com.moreira.smartstock.tests.factories.*;
 import org.junit.jupiter.api.Assertions;
@@ -167,10 +168,10 @@ public class StockMovementServiceTests {
     }
 
     @Test
-    public void registerStockExitShouldThrowsRuntimeExceptionWhenInvalidQuantity() {
+    public void registerStockExitShouldThrowsInsufficientStockExceptionWhenInvalidQuantity() {
         exitMovementDTO.setQuantity(150);
 
-        Assertions.assertThrows(RuntimeException.class,
+        Assertions.assertThrows(InsufficientStockException.class,
                 () -> service.registerStockExit(exitMovementDTO));
     }
 }
