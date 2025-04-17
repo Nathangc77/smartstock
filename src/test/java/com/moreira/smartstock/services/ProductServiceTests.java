@@ -2,7 +2,9 @@ package com.moreira.smartstock.services;
 
 import com.moreira.smartstock.dtos.ProductDTO;
 import com.moreira.smartstock.dtos.ProductSaveDTO;
+import com.moreira.smartstock.entities.Category;
 import com.moreira.smartstock.entities.Product;
+import com.moreira.smartstock.repositories.CategoryRepository;
 import com.moreira.smartstock.repositories.ProductRepository;
 import com.moreira.smartstock.services.exceptions.DatabaseException;
 import com.moreira.smartstock.services.exceptions.ResourceNotFoundException;
@@ -35,19 +37,27 @@ public class ProductServiceTests {
     @Mock
     private ProductRepository repository;
 
+    @Mock
+    private CategoryRepository categoryRepository;
+
     private Long existingId, nonExistingId;
+    private Long existingCategoryId, nonExistingCategoryId;
 
     private Product product;
     private ProductSaveDTO productSaveDTO;
+    private Category category;
     private PageImpl<Product> page;
 
     @BeforeEach
     void setUp() throws Exception {
         existingId = 1L;
         nonExistingId = 2L;
+        existingCategoryId = 1L;
+        nonExistingCategoryId = 2L;
 
         product = ProductFactory.createProduct();
         productSaveDTO = ProductFactory.createProductSaveDTO();
+        category = new Category(1L, "Ferramentas");
 
         page = new PageImpl<>(List.of(product));
 
@@ -55,6 +65,9 @@ public class ProductServiceTests {
 
         Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
         Mockito.when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
+
+        Mockito.when(categoryRepository.findById(existingCategoryId)).thenReturn(Optional.of(category));
+        Mockito.when(categoryRepository.findById(nonExistingCategoryId)).thenReturn(Optional.empty());
 
         Mockito.when(repository.save(any())).thenReturn(product);
 
@@ -105,8 +118,8 @@ public class ProductServiceTests {
     }
 
     @Test
-    public void insertShouldThrowResourceNotFoundExceptionWhenIntegrityViolated() {
-        Mockito.when(repository.save(any())).thenThrow(DataIntegrityViolationException.class);
+    public void insertShouldThrowResourceNotFoundExceptionWhenCategoryIdDoesNotExist() {
+        productSaveDTO.setCategoryId(nonExistingCategoryId);
 
         Assertions.assertThrows(ResourceNotFoundException.class,
                 () -> service.insert(productSaveDTO));
@@ -128,10 +141,10 @@ public class ProductServiceTests {
     }
 
     @Test
-    public void updateShouldThrowDatabaseExceptionWhenIntegrityViolated() {
-        Mockito.when(repository.save(any())).thenThrow(DataIntegrityViolationException.class);
+    public void updateShouldThrowResourceNotFoundExceptionWhenCategoryIdDoesNotExist() {
+        productSaveDTO.setCategoryId(nonExistingCategoryId);
 
-        Assertions.assertThrows(DatabaseException.class,
+        Assertions.assertThrows(ResourceNotFoundException.class,
                 () -> service.update(existingId, productSaveDTO));
     }
 
