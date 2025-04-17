@@ -2,10 +2,6 @@ package com.moreira.smartstock.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moreira.smartstock.dtos.ProductSaveDTO;
-import com.moreira.smartstock.entities.Product;
-import com.moreira.smartstock.repositories.ProductRepository;
-import com.moreira.smartstock.repositories.StockMovementRepository;
-import com.moreira.smartstock.tests.factories.ProductFactory;
 import com.moreira.smartstock.tests.utils.TokenUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,16 +31,9 @@ public class ProductControllerIT {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private StockMovementRepository stockMovementRepository;
-
     private String adminUsername, adminPassword;
     private String operatorUsername, operatorPassword;
     private String adminToken, operatorToken, invalidToken;
-    private Product product;
     private ProductSaveDTO productSaveDTO;
     private Long productId, nonExistingProductId, dependentProductId;
 
@@ -59,7 +48,6 @@ public class ProductControllerIT {
         operatorToken = tokenUtil.obtainAccessToken(mockMvc, operatorUsername, operatorPassword);
         invalidToken = adminToken + "xpto";
 
-        product = ProductFactory.createProduct();
         productSaveDTO = new ProductSaveDTO("Trincha Pincel 1.1/2 Pol 38mm", 12.05, "UN", 1L);
 
         productId = 10L;
