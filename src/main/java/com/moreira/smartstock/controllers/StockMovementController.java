@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/movements", produces = "application/json")
+@Tag(name = "Movimentações de Estoque", description = "Operações para movimentar estoque")
 @SecurityRequirement(name = "bearerAuth")
 public class StockMovementController {
 
