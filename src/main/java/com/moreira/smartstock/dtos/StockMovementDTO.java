@@ -1,5 +1,6 @@
 package com.moreira.smartstock.dtos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.moreira.smartstock.entities.*;
 
 import java.time.Instant;
@@ -13,7 +14,11 @@ public class StockMovementDTO {
     private String reason;
     private ProductMinDTO product;
     private UserMinDTO user;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private ProviderMinDTO provider;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private ClientMinDTO client;
 
     public StockMovementDTO() {
