@@ -21,7 +21,6 @@ API REST para gestão de estoque desenvolvida com Java e Spring Boot. O sistema 
 - Spring Data JPA
 - PostgreSQL
 - Maven
-- Lombok
 - ModelMapper
 
 ---
